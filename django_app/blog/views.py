@@ -39,6 +39,9 @@ def about(request):
 def layout(request):
     return render(request, 'container.html',{"num_cards": [1,2,3,4,5]})
 
+def mainpage(request):
+    return render(request, 'landing.html',{"num_cards": [1,2,3,4,5]})
+
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/detail.html'

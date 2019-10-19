@@ -18,13 +18,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from blog.views import layout
+from blog.views import mainpage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls', namespace='blog')),
     path('user/', include('users.urls', namespace='user')),
-    path('', layout),
+    path('', mainpage, name='home'),
 ]
 
 if settings.DEBUG:
