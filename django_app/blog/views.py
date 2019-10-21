@@ -10,7 +10,7 @@ from django.views.generic import (
         )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-from .models import Post
+from .models import Post, Comment
 
 def index(request):
     context = {
@@ -26,10 +26,6 @@ class PostListView(ListView):
     ordering = ['-date_posted']
     paginate_by = 4
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(PostListView, self).get_context_data(**kwargs) 
-    #     context['top_posts'] = Post.objects.top_posts()
-    #     return context
 
 home = PostListView.as_view()
 
@@ -49,7 +45,8 @@ class PostDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs) 
-        context['top_posts'] = Post.objects.top_posts()
+        context['comments'] = Comment.objects.for_post(post=context['post'])
+        print(context['comments'])
         return context
 
 
@@ -61,11 +58,7 @@ class PostCreateView(LoginRequiredMixin,CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(PostCreateView, self).get_context_data(**kwargs) 
-    #     context['top_posts'] = Post.objects.top_posts()
-    #     print(context)
-    #     return context
+
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
@@ -81,11 +74,6 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(PostUpdateView, self).get_context_data(**kwargs) 
-    #     context['top_posts'] = Post.objects.top_posts()
-    #     print(context)
-    #     return context
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -98,11 +86,6 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(PostDeleteView, self).get_context_data(**kwargs) 
-    #     context['top_posts'] = Post.objects.top_posts()
-    #     print(context)
-    #     return context
 
 class UserPostListView(ListView):
     model = Post
@@ -120,5 +103,3 @@ create = PostCreateView.as_view()
 update = PostUpdateView.as_view()
 delete = PostDeleteView.as_view()
 user_post = UserPostListView.as_view()
-
-# ['__bytes__', '__class__', '__contains__', '__delattr__', '__delitem__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__iter__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_charset', '_closable_objects', '_container', '_content_type_for_repr', '_convert_to_charset', '_handler_class', '_headers', '_is_rendered', '_post_render_callbacks', '_reason_phrase', '_request', 'add_post_render_callback', 'charset', 'close', 'closed', 'content', 'context_data', 'cookies', 'delete_cookie', 'flush', 'get', 'getvalue', 'has_header', 'is_rendered', 'items', 'make_bytes', 'readable', 'reason_phrase', 'render', 'rendered_content', 'rendering_attrs', 'resolve_context', 'resolve_template', 'seekable', 'serialize', 'serialize_headers', 'set_cookie', 'set_signed_cookie', 'setdefault', 'status_code', 'streaming', 'tell', 'template_name', 'using', 'writable', 'write', 'writelines']

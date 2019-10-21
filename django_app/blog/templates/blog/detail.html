@@ -1,20 +1,39 @@
 {% extends 'base.html' %} 
 {% block content %} 
-        <article class="media content-section">
-            <img class="rounded-circle article-img"  src="{{ post.author.profile.profile_pic.url }}" alt="" srcset="">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="{% url 'users:user-profile' %}">{{ post.author }}</a>
-                    <small class="text-muted">{{ post.date_posted | date:"d F, Y"}}</small>
-                    <div>
-                        {% if user.username == post.author.username  %}
-                            <a href="{% url 'blog:blog-update' post.id %}" class="btn btn-secondary m-1 btn-sm">update</a>
-                            <a href="{% url 'blog:blog-delete' post.id %}" class="btn btn-secondary m-1 bg-danger btn-sm">delete</a>
-                        {% endif %}
-                    </div>
+    <article class="media content-section">
+        <img class="rounded-circle article-img"  src="{{ post.author.profile.profile_pic.url }}" alt="" srcset="">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="{% url 'users:user-profile' %}">{{ post.author }}</a>
+                <small class="text-muted">{{ post.date_posted | date:"d F, Y"}}</small>
+                <div>
+                    {% if user.username == post.author.username  %}
+                        <a href="{% url 'blog:blog-update' post.id %}" class="btn btn-secondary m-1 btn-sm">update</a>
+                        <a href="{% url 'blog:blog-delete' post.id %}" class="btn btn-secondary m-1 bg-danger btn-sm">delete</a>
+                    {% endif %}
                 </div>
-                <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-                <p class="article-content">{{ post.content }}</p>
             </div>
-        </article>
+            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+        </div>
+    </article>
+    <article class="media content-section">
+        <div class="card bg-light card-body mb-3 comment-card">
+            <h4>Leave a comment</h4>
+            <div class="input-group">
+                <input type="text" id="userComment" class="form-control form-control-sm chat-input"
+                placeholder="Write your message here..."> 
+                <span class="input-group-btn ml-1" onclick="addComment()">     
+
+                    <a href="#" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-comment"></span> 
+                    Add Comment
+                    </a>
+            </span>
+            </div>
+            <hr data-brackets-id="12673">
+            {% include "blog/comment.html" with comments=comments post=post%}
+            
+        </div>
+    </article>
 {% endblock content %}

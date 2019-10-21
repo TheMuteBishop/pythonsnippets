@@ -95,3 +95,11 @@ a.article-title:hover {
 .top-post a{
   color: #5f788a;
 }
+
+.comment-card {
+  border: none!important;
+}
+
+.comments-list {
+  list-style: none;
+}

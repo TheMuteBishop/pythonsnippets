@@ -1,0 +1,28 @@
+<ul class="comments-list"> 
+    {% for comment in comments %}
+        {% if comment.replies.all|length > 1   %}
+        <li >
+            <strong class="float-left primary-font">{{comment.op.username}}</strong>
+            <small class="float-right text-muted">
+                <span class="glyphicon glyphicon-time"></span>
+                Time mins ago
+            </small>
+            <br>
+                {{comment.body}} 
+            </li>
+            <br>
+            {% include "blog/comment.html" with comments=comment.replies.all post="comment.post.id " %}
+        {% else %}
+        <li >
+            <strong class="float-left primary-font">{{comment.op.username}}</strong>
+            <small class="float-right text-muted">
+                <span class="glyphicon glyphicon-time"></span>
+                Time mins ago
+            </small>
+            <br>
+                {{comment.body}} 
+            </li>
+            <br>
+        {% endif %}
+    {% endfor %}
+</ul>
